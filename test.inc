@@ -1,0 +1,9 @@
+_18:
+	.DB  0x1,0x0,0x0,0x0
+
+__GLOBAL_INI_TBL:
+	.DW  0x04
+	.DW  __seed_G2
+	.DW  _18*2
+
+	.DW  0

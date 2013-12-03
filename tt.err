@@ -1,0 +1,16 @@
+Creating   'tt.eep'
+Creating   'tt.obj'
+Creating   'tt.lst'
+
+Assembling 'tt.asm'
+Including  'tt.vec'
+Including  'tt.inc'
+
+Program memory usage:
+Code             :  107 words
+Constants (dw/db):    1 words
+Unused           :    0 words
+Total            :  108 words
+
+Assembly complete with no errors.
+Deleting   'tt.eep'

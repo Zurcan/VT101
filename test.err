@@ -1,0 +1,16 @@
+Creating   'test.eep'
+Creating   'test.obj'
+Creating   'test.lst'
+
+Assembling 'test.asm'
+Including  'test.vec'
+Including  'test.inc'
+
+Program memory usage:
+Code             :  631 words
+Constants (dw/db):    6 words
+Unused           :    0 words
+Total            :  637 words
+
+Assembly complete with no errors.
+Deleting   'test.eep'

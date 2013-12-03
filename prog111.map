@@ -1,0 +1,89 @@
+CodeVisionAVR C Compiler V1.24.5 Standard
+(C) Copyright 1998-2005 Pavel Haiduc, HP InfoTech s.r.l.
+http://www.hpinfotech.com
+e-mail:office@hpinfotech.com
+
+File: D:\eltera\vibro\prog_new\prog1.c
+Global variables memory map:
+
+Variable                          Address   Size
+rx_buffer                            18Ch     24
+rx_counter                             R6      1
+mod_time                               R7      1
+mod_time_s                             R8      1
+rx_wr_index                            R9      1
+rx_c                                 R2.0    1/8
+ti_en                                R2.1    1/8
+rx_m                                 R2.2    1/8
+tx_buffer                            1A4h     64
+tx_buffer_begin                       R10      1
+tx_buffer_end                         R11      1
+buzer_en                             R2.3    1/8
+buzer                                R2.4    1/8
+pik_en                               R2.5    1/8
+buzer_buzer_en                       R2.6    1/8
+pik_count                             R12      1
+led_byte                             1E4h     10
+sys_time                             1EEh      4
+whait_time                           1F2h      4
+key_mode                             R2.7    1/8
+key_plus                             R3.0    1/8
+key_mines                            R3.1    1/8
+key_enter                            R3.2    1/8
+key_mode_press                       R3.3    1/8
+key_plus_press                       R3.4    1/8
+key_mines_press                      R3.5    1/8
+key_enter_press                      R3.6    1/8
+key_mode_press_switch                R3.7    1/8
+key_plus_press_switch                R4.0    1/8
+key_minus_press_switch               R4.1    1/8
+key_enter_press_switch               R4.2    1/8
+count_led                             R13      1
+drebezg                               R14      1
+avaria                               R4.3    1/8
+alarm1                               R4.4    1/8
+alarm2                               R4.5    1/8
+alarm_alarm1                         R4.6    1/8
+alarm_alarm2                         R4.7    1/8
+count_blink                          1F6h      2
+*ee_float                            1F8h      2
+*ee_char                             1FAh      2
+mode                                 1FCh      1
+point                                1FDh      1
+work_point                           1FEh      1
+save_point                           1FFh      1
+ed                                   200h      1
+des                                  201h      1
+sot                                  202h      1
+tis                                  203h      1
+count_filter                         204h      1
+count_filter1                        205h      1
+i                                    206h      1
+count_key                            207h      1
+count_key1                           208h      1
+filter_value                         209h      4
+adc_buf                              20Dh      2
+filter_min                           20Fh      2
+filter_max                           211h      2
+filter_buf                           213h     18
+filter_buf1                          225h    200
+buf                                  2EDh     18
+buf_m                                2FFh     18
+buf_begin                            311h      1
+buf_end                              312h      1
+buf_n                                313h      9
+x                                    31Ch      4
+adc_filter                           320h      4
+j                                    324h      1
+k                                    325h      1
+count_register                       326h      1
+count_key2                           327h      1
+start_time                           328h      4
+start_time_mode                      32Ch      4
+time_key                             330h      4
+crc                                  334h      2
+adc_value3                           336h      4
+error                                R5.0    1/8
+blok1                                R5.1    1/8
+blok2                                R5.2    1/8
+signal                               R5.3    1/8

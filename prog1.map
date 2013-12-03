@@ -1,0 +1,90 @@
+RAM Allocation
+Variable                                                          Address   Size
+--------------------------------------------------------------------------------
+rx_buffer                                                         0160h       64
+tx_buffer                                                         01A0h       64
+pik_count                                                         01E0h        1
+led_byte                                                          01E1h       10
+sys_time                                                          01EBh        4
+whait_time                                                        01EFh        4
+count_led                                                         01F3h        1
+drebezg                                                           01F4h        1
+count_blink                                                       01F5h        2
+crc                                                               01F7h        2
+mode                                                              01F9h        1
+point                                                             01FAh        1
+work_point                                                        01FBh        1
+ed                                                                01FCh        1
+des                                                               01FDh        1
+sot                                                               01FEh        1
+tis                                                               01FFh        1
+i                                                                 0200h        1
+count_key                                                         0201h        1
+count_key1                                                        0202h        1
+buf                                                               0203h       18
+buf_end                                                           0215h        1
+x                                                                 0216h        4
+adc_filter                                                        021Ah        4
+j                                                                 021Eh        1
+count_register                                                    021Fh        1
+count_key2                                                        0220h        1
+start_time                                                        0221h        4
+start_time_mode                                                   0225h        4
+time_key                                                          0229h        4
+error                                                             022Dh        1
+adc_value1                                                        022Eh        4
+adc_value2                                                        0232h        4
+adc_value3                                                        0236h        4
+_seed                                                             023Ah        4
+p                                                                 023Eh        2
+
+EEPROM Allocation
+Variable                                                          Address   Size
+--------------------------------------------------------------------------------
+reg                                                               0000h      432
+ee_point                                                          01B0h        1
+crceep                                                            01B1h        2
+crcstatic                                                         01B3h        2
+crc1digit                                                         01B5h        1
+crc2digit                                                         01B6h        1
+crc3digit                                                         01B7h        1
+crc4digit                                                         01B8h        1
+
+Register Allocation
+Variable                                                          Register  Size
+--------------------------------------------------------------------------------
+CRCLow                                                            R7           1
+rx_counter                                                        R6           1
+mod_time                                                          R9           1
+mod_time_s                                                        R8           1
+rx_wr_index                                                       R11          1
+CRCHigh                                                           R10          1
+rx_c                                                              R2.0      1bit
+ti_en                                                             R2.1      1bit
+rx_m                                                              R2.2      1bit
+tx_buffer_begin                                                   R13          1
+tx_buffer_end                                                     R12          1
+buzer_en                                                          R2.3      1bit
+buzer                                                             R2.4      1bit
+pik_en                                                            R2.5      1bit
+buzer_buzer_en                                                    R2.6      1bit
+key_mode                                                          R2.7      1bit
+key_plus                                                          R3.0      1bit
+key_mines                                                         R3.1      1bit
+key_enter                                                         R3.2      1bit
+key_mode_press                                                    R3.3      1bit
+key_plus_press                                                    R3.4      1bit
+key_mines_press                                                   R3.5      1bit
+key_enter_press                                                   R3.6      1bit
+key_mode_press_switch                                             R3.7      1bit
+key_plus_press_switch                                             R4.0      1bit
+key_minus_press_switch                                            R4.1      1bit
+key_enter_press_switch                                            R4.2      1bit
+avaria                                                            R4.3      1bit
+alarm1                                                            R4.4      1bit
+alarm2                                                            R4.5      1bit
+alarm_alarm1                                                      R4.6      1bit
+alarm_alarm2                                                      R4.7      1bit
+blok1                                                             R5.0      1bit
+blok2                                                             R5.1      1bit
+signal                                                            R5.2      1bit

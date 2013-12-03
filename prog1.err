@@ -1,0 +1,15 @@
+Creating   'prog1.eep'
+Creating   'prog1.obj'
+Creating   'prog1.lst'
+
+Assembling 'prog1.asm'
+Including  'prog1.vec'
+Including  'prog1.inc'
+
+Program memory usage:
+Code             : 6683 words
+Constants (dw/db):   13 words
+Unused           :    0 words
+Total            : 6696 words
+
+Assembly complete with no errors.
