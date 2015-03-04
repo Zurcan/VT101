@@ -133,18 +133,18 @@ interrupt [TIM2_COMP] void timer2_comp_isr(void){}
 #include <spi.h>
 
 eeprom float reg[4][27]=
- {{0, 4.6, 7.1,   0,   5,   0,   1,   0,   1,   0,   0,   1,0.00,20.0,   2,   2,   0,  10,   2,   5,   0,   0,   1,   0,1.00,11.09,    1},
-  {0, 4.6, 7.1,   0,   5,   0,   1,   0,   1,   0,   0,   1,0.00,20.0,   2,   2,   0,  10,   2,   5,   0,   0,   1,   0,1.00,11.09,    1},
-  {0,9999,9999,  30,  30,   1,   1,  10,   2,   1,   1,   2,9999,9999,  10,  10,   5,  30,   4,  10,   1,   1, 1.8,   1,99.99,12.99,  247},
-  {0,-999,-999,   0,   0,   0,   0,   0,   1,   0,   0,   0,-999,-999,   0,   0,   0,   0,   0,   0,   0,   0, 0.2,   0,0,1.00,    0}};
-  //|уст1|уст2|зад1|зад2|маск|звук|гист|звук|рел1|рел2|едиз| нпи| впи|дсну|дсву|врус|вбпв|диап|ввим|зал1|зал2| кал|заву|верс|дата|адрес|
+ {{0, 4.6, 7.1,   0,   5,   0,   1,   0,   1,   0,   0,   0,0.00,20.0,   2,   2,   0,  10,   2,   5,   0,   0,   1,   0,1.00, 2.15,    1},
+  {0, 4.6, 7.1,   0,   5,   0,   1,   0,   1,   0,   0,   0,0.00,20.0,   2,   2,   0,  10,   2,   5,   0,   0,   1,   0,1.00, 2.15,    1},
+  {0,999,999,  30,  30,   1,   1,  10,   2,   1,   1,   2,999,999,  10,  10,   5,  30,   4,  10,   1,   1, 1.8,   1,1.00,12.99,  247},
+  {0,-999,-999,   0,   0,   0,   0,   0,   1,   0,   0,   0,-999,-999,   0,   0,   0,   0,   0,   1,   0,   0, 0.2,   0,1.00,1.00,    0}};
+  //|уст1 |уст2 |зад1|зад2|маск|звук  |гист|звук |рел1 |рел2 |едиз | нпи | впи  |дсну|дсву  |врус |вбпв|диап |ввим |зал1 |зал2 | кал |заву  |верс|дата|адрес|
   // Y_01,Y_02,Z_01,Z_02,P___,C___,A_01,A_02,A_03,A_04,A_05,A_06,A_07,A_08,A_09,A_10,A_11,A_12,A_13,A_14,A_15,A_16,A_17,A_18,A_19,Adres;
 
 eeprom char ee_point=3;
-eeprom int crceep = 0x0000;
-eeprom const int crcstatic = 0x45cb;
+eeprom int crceep = 0x0000;  //   расчётное crc     5я строка до 1ff, 2 байта начиная со 2го байта в строке (после  1001B000)
+eeprom const int crcstatic = 0x70bb;//0x45cb;  
 eeprom char crc1digit = 3, crc2digit = 'c', crc3digit =2 , crc4digit = 1;    
-
+//eeprom char smth[9];
 
 //eeprom const
 char mode,point,work_point,save_point;
@@ -196,27 +196,93 @@ void hex2dec(float x)		// подпрограмма преобразования кода в ASCII
  	{				//
  	char str[9],str1[9];
  	signed char a,b;
+    char counter=0;
  	if (x<-999) x=-999;
- 	if (x>9999) x=9999;
- 	ftoa(x,5,str1);
- 	for (a=0;a<9;a++){if (str1[a]=='.') goto p1;}
+ 	if (x>999) x=999;
+ 	ftoa(x,5,str1);   
+//    for(a=0; a < 5; a++)
+//    {   
+//    
+//        if(str1[a]==0x2e)
+//        {
+//           // point = a;
+//        }
+//        else
+//        {       
+//            if(counter==0)
+//            {
+//                if(x<0) 
+//                   tis='-';
+//                else
+//                    tis = str1[a]-0x30;
+//            }
+//            else if(counter==1)
+//            {
+//                sot =  str1[a]-0x30;
+//            }         
+//            else if(counter==2)
+//            {
+//                des =  str1[a]-0x30;
+//            }           
+//            else if(counter==3)
+//            {
+//                ed =  str1[a]-0x30;
+//            }           
+//            counter++;
+//        }
+//            
+//    }
+ 	for (a=0;a<9;a++)
+    {
+        if (str1[a]=='.') 
+            goto p1;
+    }
 p1:
         b=4;
-        while ((a>=0)&&(b>=0)){str[b]=str1[a];a--;b--;}
+        while ((a>=0)&&(b>=0))
+        {
+            str[b]=str1[a];
+            a--;
+            b--;
+        }
         a=3-b;
-        while (b>=0) {str[b]='0';b--;}
+        while (b>=0) 
+        {
+            str[b]='0';
+            b--;
+        }
         b=4;
-        while ((a<9)&&(b<9)){str[b]=str1[a];a++;b++;}
-        while (b<9) {str[b]='0';b++;}
+        while ((a<9)&&(b<9))
+        {
+            str[b]=str1[a];
+            a++;
+            b++;
+        }
+        while (b<9)
+         {
+            str[b]='0';
+            b++;
+         }
  	if (point==1)
  	        {
                 if (str[0]=='-') tis='-';
-                else if (str[0]==0)tis=0;
-                else tis=str[0]-0x30;
+                else if (str[0]==0)
+                    tis=0;
+                else 
+                    tis=str[0]-0x30;
                 sot=str[1]-0x30;
                 des=str[2]-0x30;
                 ed=str[3]-0x30;
-                if (tis==0){tis=' ';if (sot==0){sot=' ';if(des==0) des=' ';}}
+                if (tis==0)
+                {
+                    tis=' ';
+                    if (sot==0)
+                    {
+                        sot=' ';
+                        if(des==0) 
+                            des=' ';
+                    }
+                    }
  	        }
  	if (point==2)
  	        {
@@ -397,6 +463,7 @@ float gis_val2=reg[0][Y_02];
 char q1,q2,q3,q4,diap_val1=0,diap_val2=0,dataH,dataL,crcok_flag=0;//diap_val1,2 - это диапазон на 1м и на 2м шаге
 float temp;
 int  imin, imax, data, j = 0, j1=0;
+unsigned char tmp[9];
 crc = 0xffff;
 //if(high==0)
 //{ 
@@ -489,16 +556,39 @@ i=0;
 #asm("sei")
 start_time=sys_time;count_register=1;
 power = 1;
+
+//ftoa(-100.989,5,tmp);
+//for(j=0; j < 9; j++)
+//    smth[j] = tmp[j];
 for(j1=0;j1<2;j1++)
 {
 tis='v';sot=1;des= 0 ;ed=1;
 set_digit_on(tis,sot,des,ed);        set_digit_off(tis,sot,des,ed);
 set_led_on(0,0,0,0,0,0,0,0);         set_led_off(0,0,0,0,0,0,0,0);
 delay_ms(1500);
-tis=1;sot=0;des= 0 ;ed=0;
-set_digit_on(tis,sot,des,ed);        set_digit_off(tis,sot,des,ed);
-set_led_on(0,0,0,0,0,0,0,0);         set_led_off(0,0,0,0,0,0,0,0);
-delay_ms(1500);
+
+if(reg[0][24]>=1000)
+{
+      tis=1;sot=0;des= 0 ;ed=0;     
+       set_digit_on(tis,sot,des,ed);  
+      set_led_on(0,0,0,0,0,0,0,0); 
+}
+else
+{
+    tis  = (reg[0][24]*1000)/1000;
+    sot  = ((int)(reg[0][24]*1000)%1000)/100;
+    des  = ((int)(reg[0][24]*1000)%100)/10;
+    ed  =(int) (reg[0][24]*1000)%10;  
+    set_digit_on(tis,sot,des,ed);        
+    set_led_on(0,0,0,0,1,0,0,0); 
+}
+delay_ms(1000);
+//tis=1;sot=0;des= 0 ;ed=0;
+set_digit_off(tis,sot,des,ed);
+set_led_off(0,0,0,0,0,0,0,0);
+//delay_ms(750);
+
+//set_digit_off(tis,sot,des,ed);
 tis='c';sot='r';des= 'c' ;ed=' ';
 set_digit_on(tis,sot,des,ed);        set_digit_off(tis,sot,des,ed);
 set_led_on(0,0,0,0,0,0,0,0);         set_led_off(0,0,0,0,0,0,0,0);
@@ -547,8 +637,8 @@ data_register=reg[0][A_07];
 if (data_register<0)
         {
         if (data_register>=-1000)point=1;
-        else if (data_register>=-100)point=2;
-        else if (data_register>=-10)point=3;
+        if (data_register>=-100)point=2;
+        if (data_register>=-10)point=3;
         }
 else
         {
@@ -671,11 +761,36 @@ while (1)
         i=reg[0][A_12];
         switch (i)
                 {
-                case 0: kk=(reg[0][A_07]-reg[0][A_06])/(20-4);bb=reg[0][A_06]-kk*4;dop1=4;dop2=20;break;//4-20mA
-                case 1: kk=(reg[0][A_07]-reg[0][A_06])/( 5-0);bb=reg[0][A_06]-kk*0;dop1=0;dop2= 5;break;//0-5mA
-                case 2: kk=(reg[0][A_07]-reg[0][A_06])/(20-0);bb=reg[0][A_06]-kk*0;dop1=0;dop2=20;break;//0-20mA
-                case 3: kk=(reg[0][A_07]-reg[0][A_06])/(10-0);bb=reg[0][A_06]-kk*0;dop1=0;dop2=10;break;//0-10V
-                default:kk=(reg[0][A_07]-reg[0][A_06])/( 5-0);bb=reg[0][A_06]-kk*0;dop1=0;dop2= 5;break;//0-5V
+                case 0: 
+                    kk=(reg[0][A_07]-reg[0][A_06])/(20-4);
+                    bb=reg[0][A_06]-kk*4;
+                    dop1=4;
+                    dop2=20;
+                    break;//4-20mA
+                case 1: 
+                    kk=(reg[0][A_07]-reg[0][A_06])/( 5-0);
+                    bb=reg[0][A_06]-kk*0;
+                    dop1=0;
+                    dop2= 5;
+                    break;//0-5mA
+                case 2: 
+                    kk=(reg[0][A_07]-reg[0][A_06])/(20-0);
+                    bb=reg[0][A_06]-kk*0;
+                    dop1=0;
+                    dop2=20;
+                    break;//0-20mA
+                case 3: 
+                    kk=(reg[0][A_07]-reg[0][A_06])/(10-0);
+                    bb=reg[0][A_06]-kk*0;
+                    dop1=0;
+                    dop2=10;
+                    break;//0-10V
+                default:
+                    kk=(reg[0][A_07]-reg[0][A_06])/( 5-0);
+                    bb=reg[0][A_06]-kk*0;
+                    dop1=0;
+                    dop2= 5;
+                    break;//0-5V
                 }
         adc_value2=adc_value1*kk+bb;
                 
@@ -899,7 +1014,29 @@ while (1)
         if (mode==2)
                 {
                 if (count_register>6)count_register=1;
-                if (count_register<3)point=work_point;
+                if (count_register<3)
+                {
+                         if ((data_register<0))
+                                {
+                                if (data_register>=-1000)
+                                   point = 1;
+                                 if (data_register>=-100)
+                                    point=2;
+                                if (data_register>=-10)
+                                    point=3;
+                                }
+                        else
+                                {
+                                if (data_register<10)
+                                    point=work_point;
+                                else if (data_register<100)
+                                    point=3;
+                                else if (data_register<1000)
+                                    point=2;
+                                else if (data_register>=1000)
+                                    point=1;
+                                }
+                }
                 else point=1;
                 hex2dec(data_register);
                 if (point==1)       {set_led_on(0,0,0,0,0,0,0,0);set_led_off(0,0,0,0,0,0,0,0);}
@@ -946,22 +1083,33 @@ while (1)
         //-------------------------------------------------------------------//
         if ((mode==11)&&(count_register!=A_16))
                 {
-                if (((count_register>=A_06)&&(count_register<=A_09))|(count_register==A_18)|(count_register==A_19))
+                if (((count_register==A_06)|(count_register==A_07))|(count_register==A_18))//|(count_register==A_19))
                         {//point=work_point;
                         if ((data_register<0))
                                 {
-                                if (data_register>=-1000)point=1;
-                                else if (data_register>=-100)point=2;
-                                else if (data_register>=-10)point=3;
+                                if (data_register>=-1000)
+                                   point = 1;
+                                 if (data_register>=-100)
+                                    point=2;
+                                if (data_register>=-10)
+                                    point=3;
                                 }
                         else
                                 {
-                                if (data_register<10)point=4;
-                                else if (data_register<100)point=3;
-                                else if (data_register<1000)point=2;
-                                else if (data_register>=1000)point=1;
+                                if (data_register<10)
+                                    point=4;
+                                else if (data_register<100)
+                                    point=3;
+                                else if (data_register<1000)
+                                    point=2;
+                                else if (data_register>=1000)
+                                    point=1;
                                 }
-                        }
+                        }     
+                else if((count_register==A_08)|(count_register==A_09))
+                {
+                            point = 1;
+                }
                 else if (count_register==A_10)point=3;
                 else point=1;
                 hex2dec(data_register);
@@ -973,31 +1121,61 @@ while (1)
                         else if (data_register==2){tis=0,sot='-';des=2;ed=0;point=1;}
                         else if (data_register==3){tis=0,sot='-';des=1;ed=0;point=1;}
                         else                      {tis=0,sot='-';des=0;ed=5;point=3;}
-                        }
-                if (point==1)       {set_led_on(0,0,0,0,0,0,0,0);set_led_off(0,0,0,0,0,0,0,0);}
-                else if (point==2)  {set_led_on(0,0,0,0,0,0,1,0);set_led_off(0,0,0,0,0,0,1,0);}
-                else if (point==3)  {set_led_on(0,0,0,0,0,1,0,0);set_led_off(0,0,0,0,0,1,0,0);}
-                else if (point==4)  {set_led_on(0,0,0,0,1,0,0,0);set_led_off(0,0,0,0,1,0,0,0);}
+                        }  
+                if(count_register==A_19)
+                {
+                     tis  = (reg[0][25]*100)/1000;
+                     sot  = ((int)(reg[0][25]*100)%1000)/100;
+                     des  = ((int)(reg[0][25]*100)%100)/10;
+                     ed  =(int) (reg[0][25]*100)%10;  
+                     point = 3;
+                }             
 //                if (count_register==A_18)
-//                        {
-//                        tis=1,sot=0;des=0;ed=0;point=1;
-//                        set_led_on(0,0,0,0,1,1,0,0);set_led_off(0,0,0,0,1,1,0,0);
-//                        }
+//                {
+//                        tis=1;sot=1;des=0;ed=0;point=3;
+//                        //set_led_on(0,0,0,0,1,1,0,0);set_led_off(0,0,0,0,1,1,0,0);
+//                }
+                if (point==1)       
+                {
+                    set_led_on(0,0,0,0,0,0,0,0);
+                    set_led_off(0,0,0,0,0,0,0,0);
+                }
+                else if (point==2)
+                {
+                    set_led_on(0,0,0,0,0,0,1,0);
+                    set_led_off(0,0,0,0,0,0,1,0);
+                }
+                else if (point==3)
+                {
+                    set_led_on(0,0,0,0,0,1,0,0);
+                    set_led_off(0,0,0,0,0,1,0,0);
+                }
+                else if (point==4)  
+                {
+                    set_led_on(0,0,0,0,1,0,0,0);
+                    set_led_off(0,0,0,0,1,0,0,0);
+                }
+  
+
                 if(count_register==CRCCONST) {tis = crc1digit; sot = crc2digit; des =crc3digit; ed = crc4digit; point = 0;}
                 if(count_register==SOFTID) {tis = 'v'; sot = 1; des = 0; ed = 1; point = 0;}        
                 }
         //-------------------------------------------------------------------//
         
         diap_val1 = reg[0][A_12];/*в этом участке кода устанавливаем соответствующее значение*/
-        if(diap_val1!=diap_val2){
-        diap_val2=diap_val1;
-        switch (diap_val1){
+        if(diap_val1!=diap_val2)
+        {
+            diap_val2=diap_val1;
+            switch (diap_val1)
+            {
                 case 0:reg[0][A_06]=4; reg[0][A_07]=20;point=3;break;
                 case 1:reg[0][A_06]=0; reg[0][A_07]=5;point=4;break;
                 case 2:reg[0][A_06]=0; reg[0][A_07]=20;point=3;break;
                 case 3:reg[0][A_06]=0; reg[0][A_07]=10;point=3;break;
-                default:reg[0][A_06]=0; reg[0][A_07]=5;point=4;break;}    
-                ee_point=point;work_point=point;  }        //здесь устанавливаем необходимое количество цифр в зависимости от режима работы (для 0-10 - 3 цифры после запятой, для 0-20 - 2 цифры после запятой)
+                default:reg[0][A_06]=0; reg[0][A_07]=5;point=4;break;
+            }    
+                ee_point=point;work_point=point;  
+        }        //здесь устанавливаем необходимое количество цифр в зависимости от режима работы (для 0-10 - 3 цифры после запятой, для 0-20 - 2 цифры после запятой)
        
        
         if (key_plus_press==1)
@@ -1136,7 +1314,8 @@ while (1)
         check_rx();
         };
         }
-else while(1){delay_ms(1000);}
+else while(1)
+{delay_ms(1000);}
 
 }         //main закончился.
 void check_rx()
